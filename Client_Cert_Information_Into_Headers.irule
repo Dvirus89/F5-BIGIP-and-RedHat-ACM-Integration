@@ -7,18 +7,18 @@ when CLIENTSSL_CLIENTCERT {
         set subject [X509::subject [SSL::cert 0]]
         if {[regexp -all "O=(.*) \\+ O=(.*),.*CN=(.*)" $subject whole_match o1 o2 cn]} {
             if {$debug > 1} {
-                log local0. "Dvir o1 $o1"
-                log local0. "Dvir o2 $o2"
-                log local0. "Dvir cn $cn"
+                log local0. "BIGIP-RHACM integration: o1 $o1"
+                log local0. "BIGIP-RHACM integration:  o2 $o2"
+                log local0. "BIGIP-RHACM integration:  cn $cn"
             }
         
         } else {
-                log local0. "Dvir regex no match"
+                log local0. "BIGIP-RHACM integration:  regex no match"
         }
         
             
     } else {
-        if {$debug > 1}{log local0. "[IP::client_addr]:[TCP::client_port]: No client cert found!"}
+        if {$debug > 1}{log local0. "BIGIP-RHACM integration: [IP::client_addr]:[TCP::client_port]: No client cert found!"}
     }
 }
 
