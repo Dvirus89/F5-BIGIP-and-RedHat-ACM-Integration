@@ -1,0 +1,34 @@
+when CLIENTSSL_CLIENTCERT {
+    # Debug flag
+    set debug 0
+    # Check if client presented a cert after it was requested/required
+    if {[SSL::cert count] > 0}{
+        # Extract cert information
+        set subject [X509::subject [SSL::cert 0]]
+        if {[regexp -all "O=(.*) \\+ O=(.*),.*CN=(.*)" $subject whole_match o1 o2 cn]} {
+            if {$debug > 1} {
+                log local0. "Dvir o1 $o1"
+                log local0. "Dvir o2 $o2"
+                log local0. "Dvir cn $cn"
+            }
+        
+        } else {
+                log local0. "Dvir regex no match"
+        }
+        
+            
+    } else {
+        if {$debug > 1}{log local0. "[IP::client_addr]:[TCP::client_port]: No client cert found!"}
+    }
+}
+
+
+when HTTP_REQUEST {
+# header insert
+    if {[SSL::cert count] > 0}{
+        HTTP::header replace "Impersonate-User" $cn
+        HTTP::header replace "Impersonate-Group" $o2
+        HTTP::header insert "Impersonate-Group" $o1
+        HTTP::header replace "Authorization" "Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+}
