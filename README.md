@@ -16,9 +16,9 @@ RHACM uses client certificate authentication between the managed cluster and the
 
 ## The Solution
 
-To solve this problem, alongside it’s WAF capabilities, the BIGIP will also act as an authentication proxy. BIGIP will receive traffic from the managed cluster who’s going to use the client certificate. BIGIP will accept traffic from the managed cluster, break the TLS, and forge a new packet.
+To solve this problem, alongside it’s WAF capabilities, the BIGIP will also act as an authentication proxy. BIGIP will receive traffic from the managed cluster who’s going to use the client certificate. BIGIP will accept traffic from the managed cluster, break the TLS, and forge a new HTTP request.
 
-The BIGIP takes the CN and Organization fields from the managed cluster’s client certificate and places them into the packet’s headers as Impersonate-User and Impersonate-Group accordingly.
+The BIGIP extracts the CN and Organization fields from the managed cluster’s client certificate and places them into the request’s headers as Impersonate-User and Impersonate-Group accordingly.
 
 ![Alt text](images/solution_diagram.png?raw=true "Solution Diagram")
 
