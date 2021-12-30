@@ -79,6 +79,6 @@ $ curl -k -H "Authorization: Bearer <Impersonator Service Account Access Token>"
 .... "status":{"allocatable":{"attachable-volumes-aws-ebs":"125","cpu":"53500m","ephemeral-storage":"577352668230","hugepages-1Gi":"0","hugepages-2Mi":"0","memory":"220662120Ki","pods":"1250"},"capacity":{"attachable-volumes-aws-ebs":"125","core_worker":"32","cpu":"56","ephemeral-storage":"626467740Ki","hugepages-1Gi":"0","hugepages-2Mi":"0","memory":"226417000Ki","pods":"1250","socket_worker":"2"},"clusterClaims":[{"name":"id.k8s.io","value":"local-cluster"},{"name":"kubeversion.open-cluster-management.io","value":"v1.21.4+6438632"},{"name":"platform.open-cluster-management.io","value":"AWS"} ...
 ```
 
-### Big IP
+### BIGIP
 
-The above process describes a manual procedure of extracting the fields from a client certificate and forging authentication headers. Big IP helps the process become automatic by applying the next [irule](Client_Cert_Information_Into_Headers.irule). After applying the _irule_, traffic directed to BigIP is affected by the policy.
+The above process describes a manual procedure of extracting the fields from a client certificate and forging authentication headers. BIGIP helps the process become automatic by applying the next [irule](Client_Cert_Information_Into_Headers.irule). After applying the _irule_, traffic directed to BIGIP is affected by the policy.
