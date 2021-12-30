@@ -11,14 +11,14 @@ The BIGIP is placed between the RHACM hub cluster and the managed OpenShift clus
 ## The Issue
 
 Out of the box, integrating the two products is not possible because of the next reasons -
-Enabling Big IP’s WAF capabilities requires breaking the TLS handshake.
-RHACM uses client certificate authentication between the managed cluster and the hub. The client certificate contains the managed cluster’s identity at the CN and Organization fields of the x509 certificate. Breaking the TLS handshake causes the client certificate’s identity parameters to disappear. Thereby making all traffic that comes directly from Big IP unauthenticated.
+Enabling BIGIP’s WAF capabilities requires breaking the TLS handshake.
+RHACM uses client certificate authentication between the managed cluster and the hub. The client certificate contains the managed cluster’s identity at the CN and Organization fields of the x509 certificate. Breaking the TLS handshake causes the client certificate’s identity parameters to disappear. Thereby making all traffic that comes directly from BIGIP unauthenticated.
 
 ## The Solution
 
-To solve this problem, alongside it’s WAF capabilities, the Big IP will also act as an authentication proxy. Big IP will receive traffic from the managed cluster who’s going to use the client certificate. Big IP will accept traffic from the managed cluster, break the TLS, and forge a new packet.
+To solve this problem, alongside it’s WAF capabilities, the BIGIP will also act as an authentication proxy. BIGIP will receive traffic from the managed cluster who’s going to use the client certificate. BIGIP will accept traffic from the managed cluster, break the TLS, and forge a new packet.
 
-The Big IP takes the CN and Organization fields from the managed cluster’s client certificate and places them into the packet’s headers as Impersonate-User and Impersonate-Group accordingly.
+The BIGIP takes the CN and Organization fields from the managed cluster’s client certificate and places them into the packet’s headers as Impersonate-User and Impersonate-Group accordingly.
 
 ![Alt text](images/solution_diagram.png?raw=true "Solution Diagram")
 
