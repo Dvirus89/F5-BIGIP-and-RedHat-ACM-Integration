@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: authentication-proxy
+resources:
+- namespace.yaml
+- clusterrolebinding.yaml
+- clusterrole.yaml
+- serviceaccount.yaml
