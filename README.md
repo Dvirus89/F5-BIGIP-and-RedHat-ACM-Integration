@@ -20,6 +20,8 @@ To solve this problem, alongside it’s WAF capabilities, the Big IP will also a
 
 The Big IP takes the CN and Organization fields from the managed cluster’s client certificate and places them into the packet’s headers as Impersonate-User and Impersonate-Group accordingly.
 
+![Alt text](images/solution_diagram.png?raw=true "Solution Diagram")
+
 ## Example
 
 This example shows how RHACM's _klusterlet_ client certificate can be transformed into headers that will be used for managed cluster authentication against the hub. The authentication parameters from the client certificate are forwarded as impersonation headers to the hub cluster. The headers are forwarded to the hub together with the _Authorization_ header. The _Authorization_ header contains the JWT access token of a service account on the hub. The service account on the hub is able to perform actions as other users (impersonate). The impersonator service account will be used to perform actions as the managed clusters.
