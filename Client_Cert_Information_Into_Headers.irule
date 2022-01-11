@@ -1,19 +1,30 @@
 when CLIENTSSL_CLIENTCERT {
     # Debug flag
     set debug 0
+    set o1 ""
+    set o2 ""
+    set cn ""
     # Check if client presented a cert after it was requested/required
     if {[SSL::cert count] > 0}{
         # Extract cert information
         set subject [X509::subject [SSL::cert 0]]
+        if {$debug > 1}{log local0. "BIGIP-RHACM integration: Subject: $subject"}
         if {[regexp -all "O=(.*) \\+ O=(.*),.*CN=(.*)" $subject whole_match o1 o2 cn]} {
             if {$debug > 1} {
+                log local0. "BIGIP-RHACM integration: Origianl match"
                 log local0. "BIGIP-RHACM integration: o1 $o1"
                 log local0. "BIGIP-RHACM integration:  o2 $o2"
                 log local0. "BIGIP-RHACM integration:  cn $cn"
             }
         
+        } elseif {[regexp -all "O=(.*).*CN=(.*)" $subject whole_match o1 cn]}  {
+                if {$debug > 1} {
+                log local0. "BIGIP-RHACM integration: New match"
+                log local0. "BIGIP-RHACM integration: o1 $o1"
+                log local0. "BIGIP-RHACM integration:  cn $cn"
+            }
         } else {
-                log local0. "BIGIP-RHACM integration:  regex no match"
+                        log local0. "BIGIP-RHACM integration:  regex no match"
         }
         
             
@@ -25,10 +36,15 @@ when CLIENTSSL_CLIENTCERT {
 
 when HTTP_REQUEST {
 # header insert
+
     if {[SSL::cert count] > 0}{
-        HTTP::header replace "Impersonate-User" $cn
-        HTTP::header replace "Impersonate-Group" $o2
-        HTTP::header insert "Impersonate-Group" $o1
+        if {$debug > 1}{log local0. "BIGIP-RHACM integration: Client-Cert exist, injecting headers from Client-Cert"}
+        HTTP::header replace "Impersonate-User" [string map {"," ""} $cn]
+        if {[string length $o2] > 0 } {
+            if {$debug > 1}{log local0. "BIGIP-RHACM integration: o2 exist"}
+            HTTP::header replace "Impersonate-Group" [string map {"," ""} $o2]
+            }
+        HTTP::header insert "Impersonate-Group" [string map {"," ""} $o1]
         HTTP::header replace "Authorization" "Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     }
 }
