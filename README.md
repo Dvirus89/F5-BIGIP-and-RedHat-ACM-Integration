@@ -6,7 +6,7 @@ The BIGIP is placed between the RHACM hub cluster and the managed OpenShift clus
 - L7 Health monitor
 - etc
 
-### Why do we need this integration from the first place? great question, keep reading.
+### Why do we need this integration from the first place? great question, keep reading!
 
 ## The Issue
 
